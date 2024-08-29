@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flashcards || Devansh Vadgama</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            margin: 0;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+        .card-container {
+            width: 90%;
+            max-width: 500px;
+            border: 1px solid #333;
+            border-radius: 8px;
+            background-color: #1e1e1e;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .question, .answer {
+            font-size: 1.2rem;
+            margin: 20px 0;
+        }
+        .answer {
+            display: none;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            border: none;
+            border-radius: 4px;
+            background-color: #446e00;
+            color: #fff;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:focus {
+            outline: none;
+        }
+        button:hover {
+            background-color: #3700b3;
+        }
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+        }
+    </style>
+</head>
+<body>
+    <h1>Flashcards || Devansh Vadgama</h1>
+    <div class="card-container">
+        <div class="question" id="question"></div>
+        <div class="answer" id="answer"></div>
+        <button id="toggle">Show Answer</button>
+        <br><br>
+        <div class="button-container">
+            <button id="back">Back</button>
+            <button id="next">Next</button>
+        </div>
+    </div>
+
+    <script>
+        const flashcards = [
+            { 
+                question: "Define: Instance", 
+                answer: "Instance: The collection of information stored in the database at a particular moment is called an instance of the database."
+            },
+            { 
+                question: "Define: Schema", 
+                answer: "Schema: The overall design of the database is called the database schema. The database system has several schemas partitioned according to the level of abstraction."
+            },
+            { 
+                question: "Define: DBMS", 
+                answer: "DBMS: A Database Management System is a collection of interrelated data and a set of programs to access those data. OR DBMS is a program that stores, retrieves, and modifies the data in the database on request."
+            },
+            { 
+                question: "Define: Database", 
+                answer: "Database: A collection of data that contains information relevant to an enterprise."
+            },
+            { 
+                question: "Define: Data Redundancy", 
+                answer: "Data Redundancy: The repetition of information is known as redundancy. This redundancy leads to higher storage and access costs. It may lead to data inconsistency, where different copies of the same data may have different values."
+            },
+            { 
+                question: "List applications of DBMS", 
+                answer: "Applications of DBMS include banking, airlines, universities, credit card transactions, telecommunication, manufacturing, human resources, and sales."
+            },
+
+            { 
+                question: "Explain DDL commands with the help of syntax", 
+                answer: "CREATE, ALTER, RENAME, TRUNCATE, and DROP are some common DDL commands."
+            },
+            { 
+                question: "List disadvantages of the typical file processing system", 
+                answer: "Disadvantages include data redundancy and inconsistency, difficulty accessing data, data isolation, integrity problems, atomicity problems, concurrent access anomalies, and security problems."
+            },
+            { 
+                question: "Define Data Independence and list its types", 
+                answer: "Data Independence: The capacity to change the schema at one level without affecting the schema at the next higher level. Types: Physical and Logical."
+            },
+
+            {
+                question: "Codd's Rule 1: Information Rule",
+                answer: "All information in a relational database is represented explicitly at the logical level and in exactly one way: by values in tables."
+            },
+            {
+                question: "Codd's Rule 2: Guaranteed Access Rule",
+                answer: "Each and every datum (atomic value) in a relational database is guaranteed to be logically accessible by resorting to a combination of table name, primary key, and column name."
+            },
+            {
+                question: "Codd's Rule 3: Systematic Treatment of NULL Values",
+                answer: "Null values (distinct from the empty character string or a string of blank characters and distinct from zero or any other number) are supported for representing missing information and inapplicable information."
+            },
+            {
+                question: "Codd's Rule 4: Dynamic Online Catalog Based on the Relational Model",
+                answer: "The database description is represented at the logical level in the same way as ordinary data, so authorized users can apply the same relational language to its interrogation as they apply to the regular data."
+            },
+            {
+                question: "Codd's Rule 5: Comprehensive Data Sublanguage Rule",
+                answer: "A relational system may support several languages and various modes of terminal use. However, there must be at least one language whose statements are expressible, using some well-defined syntax, as character strings and that is comprehensive in supporting all of the following: data definition, view definition, data manipulation (interactive and by program), integrity constraints, authorization, and transaction boundaries (begin, commit, and rollback)."
+            },
+            {
+                question: "Codd's Rule 6: View Updating Rule",
+                answer: "All views that are theoretically updatable must be updatable by the system."
+            },
+            {
+                question: "Codd's Rule 7: High-Level Insert, Update, and Delete",
+                answer: "The capability of handling a base relation or a derived relation as a single operand applies not only to the retrieval of data but also to the insertion, update, and deletion of data."
+            },
+            {
+                question: "Codd's Rule 8: Physical Data Independence",
+                answer: "Application programs and terminal activities remain logically unimpaired whenever any changes are made in either storage representations or access methods."
+            },
+            {
+                question: "Codd's Rule 9: Logical Data Independence",
+                answer: "Application programs and terminal activities remain logically unimpaired when information-preserving changes of any kind that theoretically permit unimpairment are made to the base tables."
+            },
+            {
+                question: "Codd's Rule 10: Integrity Independence",
+                answer: "Integrity constraints specific to a particular relational database must be definable in the relational data sublanguage and stored in the catalog, not in the application programs."
+            },
+            {
+                question: "Codd's Rule 11: Distribution Independence",
+                answer: "The data manipulation sublanguage of a relational system must enable application programs and terminal activities to remain logically unimpaired whenever data are physically centralized or distributed."
+            },
+            {
+                question: "Codd's Rule 12: Non-Subversion Rule",
+                answer: "If a relational system has a low-level (single-record-at-a-time) language, that low-level language cannot be used to bypass the integrity rules and constraints expressed in the higher-level relational language."
+            }
+        ];
+
+        let currentCard = 0;
+
+        const questionElement = document.getElementById('question');
+        const answerElement = document.getElementById('answer');
+        const toggleButton = document.getElementById('toggle');
+        const nextButton = document.getElementById('next');
+        const backButton = document.getElementById('back');
+
+        function showCard(cardIndex) {
+            questionElement.textContent = flashcards[cardIndex].question;
+            answerElement.innerHTML = flashcards[cardIndex].answer;
+            answerElement.style.display = 'none';
+            toggleButton.textContent = 'Show Answer';
+        }
+
+        toggleButton.addEventListener('click', () => {
+            if (answerElement.style.display === 'none') {
+                answerElement.style.display = 'block';
+                toggleButton.textContent = 'Hide Answer';
+            } else {
+                answerElement.style.display = 'none';
+                toggleButton.textContent = 'Show Answer';
+            }
+        });
+
+        nextButton.addEventListener('click', () => {
+            currentCard = (currentCard + 1) % flashcards.length;
+            showCard(currentCard);
+        });
+
+        backButton.addEventListener('click', () => {
+            currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
+            showCard(currentCard);
+        });
+
+        // Initialize with the first flashcard
+        showCard(currentCard);
+    </script>
+</body>
+</html>

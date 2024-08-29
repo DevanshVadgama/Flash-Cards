@@ -6,61 +6,139 @@
     <title>Flashcards || Devansh Vadgama</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Poppins', sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             flex-direction: column;
             height: 100vh;
             margin: 0;
-            background-color: #121212;
+            background-color: #282c34;
             color: #ffffff;
+            padding: 20px;
         }
+
         h1 {
-            font-size: 2rem;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #61dafb;
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+        }
+
+        .menu-container {
+            display: flex;
+            justify-content: center;
             margin-bottom: 20px;
         }
-        .card-container {
-            width: 90%;
-            max-width: 500px;
-            border: 1px solid #333;
-            border-radius: 8px;
-            background-color: #1e1e1e;
-            padding: 20px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            text-align: center;
+
+        .menu-container button {
+            padding: 12px 24px;
+            font-size: 1rem;
+            margin: 5px;
+            border: none;
+            border-radius: 30px;
+            background-color: #61dafb;
+            color: #282c34;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
+
+        .menu-container button:hover {
+            background-color: #21a1f1;
+            transform: translateY(-2px);
+        }
+
+        .menu-container button:focus {
+            outline: none;
+            background-color: #1d8bb5;
+        }
+
+        .card-container {
+            width: 100%;
+            max-width: 500px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            background-color: #1c1f24;
+            padding: 30px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            transition: transform 0.3s ease-in-out;
+        }
+
+        .card-container:hover {
+            transform: translateY(-5px);
+        }
+
         .question, .answer {
-            font-size: 1.2rem;
+            font-size: 1.3rem;
             margin: 20px 0;
         }
+
         .answer {
             display: none;
+            font-weight: bold;
+            color: #e6ffed;
         }
+
         button {
-            padding: 10px 20px;
+            padding: 12px 24px;
             font-size: 1rem;
             border: none;
-            border-radius: 4px;
-            background-color: #446e00;
-            color: #fff;
+            border-radius: 30px;
+            background-color: #61dafb;
+            color: #282c34;
             cursor: pointer;
             margin: 5px;
+            transition: background-color 0.3s ease, transform 0.2s ease;
         }
+
+        button:hover {
+            background-color: #21a1f1;
+            transform: translateY(-2px);
+        }
+
         button:focus {
             outline: none;
+            background-color: #1d8bb5;
         }
-        button:hover {
-            background-color: #3700b3;
-        }
+
         .button-container {
             display: flex;
             justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 500px) {
+            .card-container {
+                padding: 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            .question, .answer {
+                font-size: 1.1rem;
+            }
+
+            button {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
     <h1>Flashcards || Devansh Vadgama</h1>
+
+    <!-- Subject Menu -->
+    <div class="menu-container">
+        <button onclick="loadSubject('database')">Database</button>
+        <button onclick="loadSubject('operatingSystems')">Operating Systems</button>
+        <button onclick="loadSubject('networking')">Networking</button>
+    </div>
+
     <div class="card-container">
         <div class="question" id="question"></div>
         <div class="answer" id="answer"></div>
@@ -73,95 +151,22 @@
     </div>
 
     <script>
-        const flashcards = [
-            { 
-                question: "Define: Instance", 
-                answer: "Instance: The collection of information stored in the database at a particular moment is called an instance of the database."
-            },
-            { 
-                question: "Define: Schema", 
-                answer: "Schema: The overall design of the database is called the database schema. The database system has several schemas partitioned according to the level of abstraction."
-            },
-            { 
-                question: "Define: DBMS", 
-                answer: "DBMS: A Database Management System is a collection of interrelated data and a set of programs to access those data. OR DBMS is a program that stores, retrieves, and modifies the data in the database on request."
-            },
-            { 
-                question: "Define: Database", 
-                answer: "Database: A collection of data that contains information relevant to an enterprise."
-            },
-            { 
-                question: "Define: Data Redundancy", 
-                answer: "Data Redundancy: The repetition of information is known as redundancy. This redundancy leads to higher storage and access costs. It may lead to data inconsistency, where different copies of the same data may have different values."
-            },
-            { 
-                question: "List applications of DBMS", 
-                answer: "Applications of DBMS include banking, airlines, universities, credit card transactions, telecommunication, manufacturing, human resources, and sales."
-            },
+        const flashcards = {
+            database: [
+                { question: "Define: Instance", answer: "Instance: The collection of information stored in the database at a particular moment is called an instance of the database." },
+                { question: "Define: Schema", answer: "Schema: The overall design of the database is called the database schema." }
+            ],
+            operatingSystems: [
+                { question: "Define: Process", answer: "Process: A process is a program in execution." },
+                { question: "What is a Thread?", answer: "Thread: A thread is the smallest unit of a process that can be scheduled by an operating system." }
+            ],
+            networking: [
+                { question: "Define: TCP", answer: "TCP: Transmission Control Protocol is one of the main protocols of the Internet Protocol Suite." },
+                { question: "Define: IP Address", answer: "IP Address: An Internet Protocol address is a numerical label assigned to each device connected to a computer network." }
+            ]
+        };
 
-            { 
-                question: "Explain DDL commands with the help of syntax", 
-                answer: "CREATE, ALTER, RENAME, TRUNCATE, and DROP are some common DDL commands."
-            },
-            { 
-                question: "List disadvantages of the typical file processing system", 
-                answer: "Disadvantages include data redundancy and inconsistency, difficulty accessing data, data isolation, integrity problems, atomicity problems, concurrent access anomalies, and security problems."
-            },
-            { 
-                question: "Define Data Independence and list its types", 
-                answer: "Data Independence: The capacity to change the schema at one level without affecting the schema at the next higher level. Types: Physical and Logical."
-            },
-
-            {
-                question: "Codd's Rule 1: Information Rule",
-                answer: "All information in a relational database is represented explicitly at the logical level and in exactly one way: by values in tables."
-            },
-            {
-                question: "Codd's Rule 2: Guaranteed Access Rule",
-                answer: "Each and every datum (atomic value) in a relational database is guaranteed to be logically accessible by resorting to a combination of table name, primary key, and column name."
-            },
-            {
-                question: "Codd's Rule 3: Systematic Treatment of NULL Values",
-                answer: "Null values (distinct from the empty character string or a string of blank characters and distinct from zero or any other number) are supported for representing missing information and inapplicable information."
-            },
-            {
-                question: "Codd's Rule 4: Dynamic Online Catalog Based on the Relational Model",
-                answer: "The database description is represented at the logical level in the same way as ordinary data, so authorized users can apply the same relational language to its interrogation as they apply to the regular data."
-            },
-            {
-                question: "Codd's Rule 5: Comprehensive Data Sublanguage Rule",
-                answer: "A relational system may support several languages and various modes of terminal use. However, there must be at least one language whose statements are expressible, using some well-defined syntax, as character strings and that is comprehensive in supporting all of the following: data definition, view definition, data manipulation (interactive and by program), integrity constraints, authorization, and transaction boundaries (begin, commit, and rollback)."
-            },
-            {
-                question: "Codd's Rule 6: View Updating Rule",
-                answer: "All views that are theoretically updatable must be updatable by the system."
-            },
-            {
-                question: "Codd's Rule 7: High-Level Insert, Update, and Delete",
-                answer: "The capability of handling a base relation or a derived relation as a single operand applies not only to the retrieval of data but also to the insertion, update, and deletion of data."
-            },
-            {
-                question: "Codd's Rule 8: Physical Data Independence",
-                answer: "Application programs and terminal activities remain logically unimpaired whenever any changes are made in either storage representations or access methods."
-            },
-            {
-                question: "Codd's Rule 9: Logical Data Independence",
-                answer: "Application programs and terminal activities remain logically unimpaired when information-preserving changes of any kind that theoretically permit unimpairment are made to the base tables."
-            },
-            {
-                question: "Codd's Rule 10: Integrity Independence",
-                answer: "Integrity constraints specific to a particular relational database must be definable in the relational data sublanguage and stored in the catalog, not in the application programs."
-            },
-            {
-                question: "Codd's Rule 11: Distribution Independence",
-                answer: "The data manipulation sublanguage of a relational system must enable application programs and terminal activities to remain logically unimpaired whenever data are physically centralized or distributed."
-            },
-            {
-                question: "Codd's Rule 12: Non-Subversion Rule",
-                answer: "If a relational system has a low-level (single-record-at-a-time) language, that low-level language cannot be used to bypass the integrity rules and constraints expressed in the higher-level relational language."
-            }
-        ];
-
+        let currentSubject = 'database';
         let currentCard = 0;
 
         const questionElement = document.getElementById('question');
@@ -171,10 +176,17 @@
         const backButton = document.getElementById('back');
 
         function showCard(cardIndex) {
-            questionElement.textContent = flashcards[cardIndex].question;
-            answerElement.innerHTML = flashcards[cardIndex].answer;
-            answerElement.style.display = 'none';
-            toggleButton.textContent = 'Show Answer';
+            const subjectCards = flashcards[currentSubject];
+            if (subjectCards.length > 0) {
+                questionElement.textContent = subjectCards[cardIndex].question;
+                answerElement.textContent = subjectCards[cardIndex].answer;
+                answerElement.style.display = 'none';
+                toggleButton.textContent = 'Show Answer';
+            } else {
+                questionElement.textContent = 'No flashcards available for this subject.';
+                answerElement.textContent = '';
+                toggleButton.style.display = 'none';
+            }
         }
 
         toggleButton.addEventListener('click', () => {
@@ -188,17 +200,26 @@
         });
 
         nextButton.addEventListener('click', () => {
-            currentCard = (currentCard + 1) % flashcards.length;
+            const subjectCards = flashcards[currentSubject];
+            currentCard = (currentCard + 1) % subjectCards.length;
             showCard(currentCard);
         });
 
         backButton.addEventListener('click', () => {
-            currentCard = (currentCard - 1 + flashcards.length) % flashcards.length;
+            const subjectCards = flashcards[currentSubject];
+            currentCard = (currentCard - 1 + subjectCards.length) % subjectCards.length;
             showCard(currentCard);
         });
 
-        // Initialize with the first flashcard
-        showCard(currentCard);
+        function loadSubject(subject) {
+            currentSubject = subject;
+            currentCard = 0;
+            toggleButton.style.display = 'block';
+            showCard(currentCard);
+        }
+
+        // Initialize with the first flashcard in the 'Database' subject
+        loadSubject(currentSubject);
     </script>
 </body>
 </html>
